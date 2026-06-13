@@ -18,21 +18,25 @@ Multi-broker automated trading bot for gold, oil, and index futures. TradingView
 Unified event bus connecting Aurum, CLAIRO, and Pisces. Broker outages automatically open incident triage runs; security blocks trigger investigation playbooks; completed remediations queue a trading resume that **requires explicit human confirmation via Telegram** before the bot trades again. Timeout escalation if no decision arrives.
 **Stack:** Python, Redis, Telegram Bot API
 
-### Pisces — Incident Triage & Remediation
-Automated incident-response platform: playbook-driven triage runner with approval gates, Grafana observability dashboards, Helm chart for Kubernetes deployment, and CI via GitHub Actions.
-**Stack:** Python, Grafana, Helm/Kubernetes, GitHub Actions
+### Pisces — Self-Healing for Autonomous AI Agent Fleets
+Monitors a fleet of autonomous AI agents and auto-heals them: when an agent fails, Pisces triages the failure and proposes or executes a remediation **behind a mandatory human-approval gate**. Playbook-driven triage runner, per-agent fleet-health analytics, Grafana observability dashboards, a Helm chart for Kubernetes, and CI via GitHub Actions. Generic infrastructure and CI incidents are supported too.
+**Stack:** Python, LangGraph, Grafana, Helm/Kubernetes, GitHub Actions
 
 ### CLAIRO (AutOps) — Operations Control Plane
-AI operations control plane with a hash-chained audit log, authentication layer, prompt-injection firewall, and a React dashboard for oversight of automated actions.
+AI operations control plane with an authentication layer, infrastructure action-gating, and a React dashboard for oversight of automated actions. Its governance layer — a deterministic action firewall and a hash-chained audit log — was productized separately as **Clairoptyx** (below).
 **Stack:** Python, React/TypeScript, FastAPI
 
 ---
 
 ## Standalone Builds
 
-### Circe — AI Sales Agent + Immutable Ledger
-Two-layer FinOps loop: a LangGraph-powered B2B sales agent (prospecting → qualification → pricing → close) hands off to a Go financial ledger the moment a deal closes. The probabilistic layer never touches money directly — deposits are logged through an authenticated API into PostgreSQL with integer-cents amounts, an append-only audit log, and a database trigger enforcing immutability.
+### Circe — Automation Engagement Agent + Immutable Ledger
+Two-layer FinOps loop: a LangGraph-powered agent that sells custom process-automation builds (prospecting → qualification → pricing → close) hands off to a Go financial ledger the moment a deal closes. The probabilistic layer never touches money directly — deposits are logged through an authenticated API into PostgreSQL with integer-cents amounts, an append-only audit log, and a database trigger enforcing immutability.
 **Stack:** Python, LangGraph, FastAPI, Go, Gin, PostgreSQL, Docker Compose
+
+### Clairoptyx — AI Agent Governance Plane
+Action-gating firewall + tamper-evident audit chain for autonomous AI agents. Every agent action is evaluated against a deterministic policy — no LLM in the decision path, so verdicts are reproducible — and recorded in a SHA-256 hash-linked, append-only log where any tampered entry breaks every subsequent hash. High-risk actions are gated behind an MFA challenge. Extracted from CLAIRO's governance layer into a standalone service.
+**Stack:** Python, FastAPI, Pydantic, PostgreSQL/Supabase, Redis, Docker
 
 ### Fieldstone — Supply-Chain-Finance Gateway
 Banking middleware gateway with idempotency-key passthrough, per-IP rate limiting, HashiCorp Vault AppRole authentication, and audited Kubernetes manifests.
